@@ -45,11 +45,11 @@ class Architecture:
         with tf.variable_scope("Core_Model"):
             embedding = tf.get_variable("word_embeddings", [self.vocab_size, self.embedding_size])
             x = tf.nn.embedding_lookup(embedding, self.placeholders.comment_in)
-            x = BatchNorm(name="bn_in")(x, train=self.placeholders.is_train)
+            x = tf.contrib.layers.layer_norm(x)
             recurrent_cell = tf.nn.rnn_cell.GRUCell(self.n_recurrent_units, activation=tf.nn.relu)
             outputs, states = tf.nn.dynamic_rnn(recurrent_cell, x, dtype=tf.float32, scope="recurrency")
             x = outputs[:, -1, :]
-            x = BatchNorm(name="bn_out_recurrency")(x)
+            x = tf.contrib.layers.layer_norm(x)
             output = tf.layers.dense(x, self.class_cardinality, activation=None,
                                      kernel_initializer=tf.contrib.layers.xavier_initializer(),
                                      name="dense_1")

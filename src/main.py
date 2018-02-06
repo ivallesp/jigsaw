@@ -10,9 +10,9 @@ from src.common_paths import get_model_path, get_tensorboard_logs_path
 
 from tqdm import tqdm
 
-batch_size = 128
+batch_size = 100
 project_id = "jigsaw"
-version_id = "v0"
+version_id = "v1"
 config = json.load(open("settings.json"))
 
 
