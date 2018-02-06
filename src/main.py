@@ -58,7 +58,7 @@ for epoch in range(10000):
     pbar.set_description("[epoch: {0:04d} | loss: {1:.3f} | loss_dev: {2:.3f}]".format(epoch+1, np.mean(l), loss_dev))
     pbar.close()
     if loss_dev < min_loss:
-        min_loss = losses_dev
+        min_loss = loss_dev
         saver.save(sess, epoch)
 
 
