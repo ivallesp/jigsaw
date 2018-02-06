@@ -50,7 +50,7 @@ def get_summary_writer(session, logs_path, project_id, version_id, remove_if_exi
 
 class TensorFlowSaver:
     def __init__(self, path, max_to_keep=100):
-        self.path = path
+        self.path = os.path.join(path, "model")
         self.saver = tf.train.Saver(max_to_keep=max_to_keep)
 
     def save(self, sess, step):
