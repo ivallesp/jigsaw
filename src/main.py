@@ -34,7 +34,7 @@ c=0
 
 for epoch in range(10000):
     batcher_train = get_batcher(df_train, batch_size)
-    pbar = tqdm(batcher_train, unit=" btch", total=df_train.shape[0]//batch_size, ncols=30)
+    pbar = tqdm(batcher_train, unit=" btch", total=df_train.shape[0]//batch_size, ncols=75)
     for i, (id_train, batch_train, target_train) in enumerate(pbar):
         _, s, l = sess.run([net.op.op, net.summaries.s_tr, net.losses.sigmoid_ce],
                         feed_dict={net.ph.comment_in: batch_train,
