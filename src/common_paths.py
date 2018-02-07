@@ -72,7 +72,6 @@ def get_models_path():
     path = os.path.join(get_base_path(), "models")
     return path
 
-
 @_is_output_path
 def get_model_path(project_id, version_id):
     path = os.path.join(get_models_path(), "{0}_{1}".format(project_id, version_id))
@@ -83,8 +82,12 @@ def get_outputs_path():
     path = os.path.join(get_base_path(), "outputs")
     return path
 
-
 @_is_output_path
 def get_output_path(project_id, version_id):
     path = os.path.join(get_outputs_path(), "{0}_{1}".format(project_id, version_id))
+    return path
+
+@_is_output_path
+def get_observers_path():
+    path = os.path.join(get_base_path(), "observers")
     return path

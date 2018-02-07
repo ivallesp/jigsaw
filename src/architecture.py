@@ -8,12 +8,13 @@ class NameSpacer:
 
 
 class Architecture:
-    def __init__(self, class_cardinality, vocab_size, name="architecture"):
-        self.embedding_size = 100
-        self.n_recurrent_units = 100
+    def __init__(self, class_cardinality, vocab_size, embedding_size, n_recurrent_units, learning_rate,
+                 name="architecture"):
+        self.embedding_size = embedding_size
+        self.n_recurrent_units = n_recurrent_units
         self.class_cardinality = class_cardinality
         self.vocab_size = vocab_size
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
         self.name = name
         self.define_computation_graph()
 
@@ -38,7 +39,8 @@ class Architecture:
             target = tf.placeholder(dtype=tf.int32, shape=(None, self.class_cardinality), name="target")
             acc_dev = tf.placeholder(dtype=tf.float32, shape=None, name="acc_dev")
             loss_dev = tf.placeholder(dtype=tf.float32, shape=None, name="loss_dev")
-            return ({"comment_in": comment_in, "target": target,
+            keep_prob = tf.placeholder(dtype=tf.float32, shape=None, name="dropout_keep_prob")
+            return ({"comment_in": comment_in, "target": target, "keep_prob": keep_prob,
                      "is_train": is_train, "acc_dev": acc_dev, "loss_dev": loss_dev})
 
     def define_core_model(self):
@@ -46,10 +48,12 @@ class Architecture:
             embedding = tf.get_variable("word_embeddings", [self.vocab_size, self.embedding_size])
             x = tf.nn.embedding_lookup(embedding, self.placeholders.comment_in)
             x = BatchNorm(name="bn_in")(x, train=self.placeholders.is_train)
+            x = tf.nn.dropout(x=x, keep_prob=self.placeholders.keep_prob, name="dropout_embedding")
             recurrent_cell = tf.nn.rnn_cell.GRUCell(self.n_recurrent_units, activation=tf.nn.relu)
             outputs, states = tf.nn.dynamic_rnn(recurrent_cell, x, dtype=tf.float32, scope="recurrency")
             x = outputs[:, -1, :]
             x = BatchNorm(name="bn_out_recurrency")(x)
+            x = tf.nn.dropout(x=x, keep_prob=self.placeholders.keep_prob, name="dropout_rnn")
             output = tf.layers.dense(x, self.class_cardinality, activation=None,
                                      kernel_initializer=tf.contrib.layers.xavier_initializer(),
                                      name="dense_1")
