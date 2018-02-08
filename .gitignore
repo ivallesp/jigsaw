@@ -4,5 +4,6 @@
 input
 models
 outputs
+observers
 .idea
 settings.json
