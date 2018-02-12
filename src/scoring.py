@@ -32,6 +32,7 @@ batcher_scoring = get_batcher(df, batch_size, train=False)
 pbar = tqdm(batcher_scoring, unit=" btch", total=df.shape[0] // batch_size, ncols=75)
 outputs=[]
 ids=[]
+
 for i, (id, batch) in enumerate(pbar):
     output = sess.run(net.core_model.output, feed_dict={net.ph.comment_in: batch,
                                                          net.ph.is_train: False,
@@ -39,7 +40,6 @@ for i, (id, batch) in enumerate(pbar):
     ids.append(id)
     outputs.append(output)
 
-    c += 1
 
 pbar.close()
 
