@@ -1,5 +1,5 @@
 import json
-
+import os
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
@@ -11,9 +11,11 @@ from src.tensorflow_utilities import start_tensorflow_session, get_summary_write
 from src.architecture import Architecture
 from src.common_paths import get_model_path, get_tensorboard_logs_path
 
-
+run_number = 3
 project_id = "jigsaw"
 version_id = "v1"
+observer_path = os.path.join(get_observers_path(), str(run_number))
+locals().update(json.load(open(os.path.join(observer_path, "config.json"))))
 batch_size = 256
 config = json.load(open("settings.json"))
 
