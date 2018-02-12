@@ -29,7 +29,7 @@ saver = TensorFlowSaver(get_model_path(project_id, version_id))
 saver.load(sess)
 
 batcher_scoring = get_batcher(df, batch_size, train=False)
-pbar = tqdm(batcher_scoring, unit=" btch", total=df_train.shape[0] // batch_size, ncols=75)
+pbar = tqdm(batcher_scoring, unit=" btch", total=df.shape[0] // batch_size, ncols=75)
 outputs=[]
 ids=[]
 for i, (id, batch) in enumerate(pbar):
