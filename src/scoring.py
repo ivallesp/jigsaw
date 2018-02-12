@@ -3,7 +3,9 @@ import os
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
+import pandas as pd
 
+from src.general_utilities import flatten
 from src.architecture import Architecture
 from src.common_paths import get_model_path, get_tensorboard_logs_path, get_observers_path
 from src.data_tools import load_scoring_data, get_batcher
@@ -43,4 +45,10 @@ for i, (id, batch) in enumerate(pbar):
 
 pbar.close()
 
+ids = flatten(ids)
+outputs = np.concatenate(outputs, axis=0)
 
+df = pd.DataFrame(np.concatenate([np.matrix(ids).T, 1 / (1 + np.exp(-outputs))], axis=1),
+                  columns=["id", "toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"])
+
+df.to_csv(os.path.join(observer_path, "submission.csv"), sep=",", index=False)

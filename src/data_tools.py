@@ -85,7 +85,7 @@ def get_batcher(df, b_size=16, train=True):
             yield element[0], batch, targets
     else:
         pool = [df.id.values.tolist(), df.code.map(np.matrix).values.tolist()]
-        batcher = batching(pool, b_size)
+        batcher = batching(pool, b_size, return_incomplete_batches=True)
         for element in batcher:
             max_len = max(map(lambda x:x.shape[1], element[1]))
             batch = np.row_stack(list(map(lambda x: np.pad(np.array(x)[0], (0,max_len-x.shape[1]), mode="constant"), element[1])))
