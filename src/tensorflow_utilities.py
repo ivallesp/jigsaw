@@ -61,3 +61,10 @@ class TensorFlowSaver:
 
     def save(self, sess, step):
         self.saver.save(sess=sess, save_path=self.path, global_step=step)
+
+    def load(self, sess, ckpt_file="latest"):
+        if ckpt_file == "latest":
+            ckpt_path = tf.train.latest_checkpoint(self.path)
+        else:
+            ckpt_path = os.path.join(self.path, ckpt_file)
+        self.saver.restore(sess, ckpt_path)
