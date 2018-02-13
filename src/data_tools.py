@@ -15,7 +15,6 @@ def replace(s, dictionary):
         return dictionary[match.group(0)]
     return dictionary_re.sub(replace, s)
 
-# TODO: Fix seed!!!
 def train_dev_test_split(df, train_percent=.6, dev_percent=.2):
     m = len(df)
     train_end = int(train_percent * m)
@@ -24,7 +23,6 @@ def train_dev_test_split(df, train_percent=.6, dev_percent=.2):
     validate = df.iloc[train_end:dev_end]
     test = df.iloc[dev_end:]
     return train, validate, test
-
 
 def load_train_data():
     df = pd.read_csv(os.path.join(get_data_path(), "train.csv"))
