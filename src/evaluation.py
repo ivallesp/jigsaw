@@ -37,7 +37,7 @@ targets=[]
 outputs=[]
 ids=[]
 
-for i, (target, id, batch) in enumerate(pbar):
+for i, (id, batch, target) in enumerate(pbar):
     output = sess.run(net.core_model.output, feed_dict={net.ph.comment_in: batch,
                                                          net.ph.is_train: False,
                                                          net.ph.keep_prob: 1})
