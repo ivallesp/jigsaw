@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, roc_curve
 
-from src.utilities import flatten
+from src.general_utilities import flatten
 
 
 def apk(actual, predicted, k=10):
