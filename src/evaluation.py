@@ -13,6 +13,7 @@ from src.data_tools import load_train_data, get_batcher
 from src.tensorflow_utilities import start_tensorflow_session, get_summary_writer, TensorFlowSaver
 from src.architecture import Architecture
 from src.common_paths import get_model_path, get_tensorboard_logs_path
+from src.metrics import generate_binary_reports
 
 run_number = 3
 project_id = "jigsaw"
@@ -52,7 +53,18 @@ outputs = np.concatenate(outputs, axis=0)
 targets = np.concatenate(targets, axis=0)
 
 aucs = []
-for i in range(targets.shape[1]):
-    aucs.append(roc_auc_score(targets[:,i], outputs[:,i]))
+for i, t in enumerate(["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]):
+
+    generate_binary_reports(y_true=targets[:, i],
+                            y_pred=outputs[:, i],
+                            path=os.path.join(observer_path),
+                            alias=t + "_1000bins",
+                            uplift_bins=1000)
+
+    generate_binary_reports(y_true=targets[:, i],
+                            y_pred=outputs[:, i],
+                            path=os.path.join(observer_path),
+                            alias=t + "_100bins",
+                            uplift_bins=100)
 
 print(aucs)
