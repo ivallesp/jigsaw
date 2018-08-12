@@ -49,9 +49,12 @@ class Architecture:
             x = tf.nn.embedding_lookup(embedding, self.placeholders.comment_in)
             x = tf.contrib.layers.layer_norm(x)
             x = tf.nn.dropout(x=x, keep_prob=self.placeholders.keep_prob, name="dropout_embedding")
-            recurrent_cell = tf.nn.rnn_cell.GRUCell(self.n_recurrent_units, activation=tf.nn.relu)
-            outputs, states = tf.nn.dynamic_rnn(recurrent_cell, x, dtype=tf.float32, scope="recurrency")
-            x = outputs[:, -1, :]
+            recurrent_cell_fw = tf.nn.rnn_cell.GRUCell(self.n_recurrent_units, activation=tf.nn.relu)
+            recurrent_cell_bw = tf.nn.rnn_cell.GRUCell(self.n_recurrent_units, activation=tf.nn.relu)
+            outputs, states = tf.nn.bidirectional_dynamic_rnn(recurrent_cell_fw, cell_bw, x, dtype=tf.float32,
+                                                              scope="recurrency")
+            x = [output[:, -1, :] for output in outputs]
+            x = tf.concat()
             x = tf.contrib.layers.layer_norm(x)
             x = tf.nn.dropout(x=x, keep_prob=self.placeholders.keep_prob, name="dropout_rnn")
             output = tf.layers.dense(x, self.class_cardinality, activation=None,
