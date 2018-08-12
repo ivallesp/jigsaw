@@ -51,6 +51,10 @@ def main(batch_size, embedding_size, n_recurrent_units, dropout_prob, learning_r
     min_loss = np.Inf
     c = 0
 
+    df_train.to_csv(os.path.join(ex.observers[0].dir, "train.csv"))
+    df_dev.to_csv(os.path.join(ex.observers[0].dir, "dev.csv"))
+    df_test.to_csv(os.path.join(ex.observers[0].dir, "test.csv"))
+
     for epoch in range(10000):
         batcher_train = get_batcher(df_train, batch_size)
         pbar = tqdm(batcher_train, unit=" btch", total=df_train.shape[0]//batch_size, ncols=75)
@@ -82,3 +86,4 @@ def main(batch_size, embedding_size, n_recurrent_units, dropout_prob, learning_r
         if loss_dev < min_loss:
             min_loss = loss_dev
             saver.save(sess, epoch)
+
