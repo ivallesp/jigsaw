@@ -19,3 +19,6 @@ For running the algorithm just follow the next steps.
 
 ## Disclaimer
 This effort was not made with the aim of participating in the competition, but as a proof of concept to understand the frontiers of Neural Networks in this configuration. Don't expect breaking results compared to the results achieved by the winners of the competition
+
+## License
+This repository is licensed under MIT license. Copyright (c) 2018 Iván Vallés Pérez
